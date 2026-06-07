@@ -5,7 +5,8 @@ A Python‑based monitoring service that streams GitHub repository events (Watch
 ## Architecture (C4 L1)
 <img width="1318" height="528" alt="image" src="https://github.com/user-attachments/assets/d551fa30-e6c1-407c-b890-b28f8f6cf363" />
 
-
+## Note:
+Using the global /events endpoint as specified in the assignment.The default repository "microsoft/vscode" is used for detailed logging because it is highly active, which makes it well-suited for demonstration purposes.Without using a highly active repository like this, it becomes significantly harder to reliably observe and fetch PullRequestEvent data within a short time window, which is required for testing and validating the monitoring logic.
 
 ## Flow Summary
 **Event Monitor Service:**
