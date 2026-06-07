@@ -48,7 +48,7 @@ requests
 
 ## Setup
 
-**1) Create Python Environment**
+**1) Create Python Environment**(Open the project folder in VS Code.)
 - python -m venv venv
 - source venv/bin/activate
   
