@@ -12,17 +12,17 @@ The Event Monitor Service polls the GitHub Events API for a specific repository 
 It processes only the relevant event types and computes the required metrics.
 
 **Filters and processes:**
-WatchEvent
-,PullRequestEvent
-,IssuesEvent
+WatchEvent,
+PullRequestEvent,
+IssuesEvent
 
 **Computes:**
 Average time between PullRequestEvents
 and Event counts grouped by event type for a given offset
 
 **Metrics are delivered:**
--Printed live in the terminal during continuous monitoring
--Exposed via REST API endpoints for external access
+Printed live in the terminal during continuous monitoring
+and exposed via REST API endpoints for external access
 
 ## Components
 
