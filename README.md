@@ -27,7 +27,7 @@ Printed live in the terminal during continuous monitoring
 and exposed via REST API endpoints for external access
 
 ## Components:
-**monitor.py**
+**monitor.py:**
 **Responsible for:**
 Polling the GitHub Events API
 Filtering relevant event types
@@ -35,7 +35,7 @@ Storing events in memory
 Calculating metrics
 Printing metrics to the terminal
 
-**api.py**
+**api.py:**
 **Responsible for:**
 Starting the FastAPI application
 Launching the monitor in a background thread
