@@ -3,6 +3,7 @@
 A Python‑based monitoring service that streams GitHub repository events (WatchEvent, PullRequestEvent, IssuesEvent), computes real‑time metrics, prints them to the terminal, and exposes the same metrics through a REST API built with FastAPI.
 
 ## Architecture (C4 L1)
+<img width="1318" height="528" alt="image" src="https://github.com/user-attachments/assets/d551fa30-e6c1-407c-b890-b28f8f6cf363" />
 
 
 
@@ -24,20 +25,49 @@ and Event counts grouped by event type for a given offset
 Printed live in the terminal during continuous monitoring
 and exposed via REST API endpoints for external access
 
-## Components
+##Components:
+**monitor.py**
+**Responsible for:**
+Polling the GitHub Events API
+Filtering relevant event types
+Storing events in memory
+Calculating metrics
+Printing metrics to the terminal
 
-- **Event Monitor:** Continuously polls https://api.github.com/repos/microsoft/vscode/events, filters the target event types (WatchEvent, PullRequestEvent, IssuesEvent),stores them in memory, and computes the required metrics (average PR interval + event counts).Also prints live metrics to the terminal.
-- **REST API Service:** A FastAPI‑based service that runs the monitor in a background thread and exposes the metrics through HTTP endpoints.
-  Provides /metrics/event-counts, /metrics/avg-pr-interval, and /metrics/visualization.
-- **Requirements File:** Defines the minimal dependencies (fastapi, uvicorn, requests) needed to run the monitoring service and REST API.
+**api.py**
+**Responsible for:**
+Starting the FastAPI application
+Launching the monitor in a background thread
+Exposing REST endpoints
+
+**requirements.txt**
+**Defines the required dependencies:**
+fastapi
+uvicorn
+requests
 
 ## Setup
 
-**1) Python env**
+**1) Create Python Environment**
 - python -m venv venv
 - source venv/bin/activate
+  
+**2)Install Dependencies**
 - pip install -r requirements.txt
 
-**2) Run monitor**
-- python service/python monitor.py            # This prints live metrics every 30 seconds
-- python service/python api.py --once     # This script runs:The monitor loop,The FastAPI server,Terminal logging
+**3) 3. Run Application**
+- python api.py --once     # This script runs:The monitor loop,The FastAPI server, Live metrics details
+
+##REST Endpoints
+**Event Counts**
+http://localhost:8000/metrics/event-counts?offset_minutes=60
+
+Returns event counts grouped by type within the specified offset.
+
+**Average Pull Request Interval**
+http://localhost:8000/metrics/avg-pr-interval
+
+**Visualization**
+GET /metrics/visualization?offset_minutes=60
+
+Returns a PNG chart showing event counts grouped by event type.
