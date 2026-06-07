@@ -33,11 +33,11 @@ and exposed via REST API endpoints for external access
 
 ## Setup
 
-1) Python env
+**1) Python env**
 - python -m venv venv
 - source venv/bin/activate
 - pip install -r requirements.txt
 
-2) Run monitor
+**2) Run monitor**
 - python service/python monitor.py            # This prints live metrics every 30 seconds
 - python service/python api.py --once     # This script runs:The monitor loop,The FastAPI server,Terminal logging
