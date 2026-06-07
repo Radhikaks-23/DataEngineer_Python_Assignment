@@ -25,7 +25,7 @@ and Event counts grouped by event type for a given offset
 Printed live in the terminal during continuous monitoring
 and exposed via REST API endpoints for external access
 
-##Components:
+## Components:
 **monitor.py**
 **Responsible for:**
 Polling the GitHub Events API
@@ -58,7 +58,7 @@ requests
 **3) 3. Run Application**
 - python api.py --once     # This script runs:The monitor loop,The FastAPI server, Live metrics details
 
-##REST Endpoints
+## REST Endpoints
 **Event Counts**
 http://localhost:8000/metrics/event-counts?offset_minutes=60
 
