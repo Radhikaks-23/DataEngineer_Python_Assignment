@@ -68,6 +68,6 @@ Returns event counts grouped by type within the specified offset.
 http://localhost:8000/metrics/avg-pr-interval
 
 **Visualization**
-GET /metrics/visualization?offset_minutes=60
+http://localhost:8000/metrics/visualization?offset_minutes=60
 
 Returns a PNG chart showing event counts grouped by event type.
