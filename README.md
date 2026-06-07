@@ -4,27 +4,25 @@ A Python‑based monitoring service that streams GitHub repository events (Watch
 
 ## Architecture (C4 L1)
 
-[Person: Dashboard User] → [Container: GitHub Pages (docs/)] ← [Container: Data Exporter] ← [Container: Events DB (SQLite)] ← [Container: Event Monitor Service] ← [External System: GitHub API /events]
-[Person: API Consumer] → [Container: MCP Server] → [Container: Events DB (SQLite)]
+
 
 ## Flow Summary
-The Event Monitor Service polls the GitHub Events API for a specific repository (microsoft/vscode).
--It filters relevant event types and computes:
-->Average time between PullRequestEvents
-->Event counts grouped by event type for a given offset
+The Event Monitor Service polls the GitHub Events API for a specific repository (microsoft/vscode).\n
+->It filters relevant event types and computes:
+-Average time between PullRequestEvents
+-Event counts grouped by event type for a given offset
 
--Metrics are:
--> Printed live in the terminal
--> Exposed via REST API endpoints
+->Metrics are:
+-Printed live in the terminal
+-Exposed via REST API endpoints
 
 
 ## Components
 
-- Event Monitor: Continuously polls https://api.github.com/repos/microsoft/vscode/events, filters the target event types (WatchEvent, PullRequestEvent, IssuesEvent),
-                  stores them in memory, and computes the required metrics (average PR interval + event counts).Also prints live metrics to the terminal.
-- REST API Service : A FastAPI‑based service that runs the monitor in a background thread and exposes the metrics through HTTP endpoints.
-                     Provides /metrics/event-counts, /metrics/avg-pr-interval, and /metrics/visualization.
-- Requirements File : Defines the minimal dependencies (fastapi, uvicorn, requests) needed to run the monitoring service and REST API.
+- **Event Monitor:**Continuously polls https://api.github.com/repos/microsoft/vscode/events, filters the target event types (WatchEvent, PullRequestEvent, IssuesEvent),stores them in memory, and computes the required metrics (average PR interval + event counts).Also prints live metrics to the terminal.
+- **REST API Service:** A FastAPI‑based service that runs the monitor in a background thread and exposes the metrics through HTTP endpoints.
+  Provides /metrics/event-counts, /metrics/avg-pr-interval, and /metrics/visualization.
+- **Requirements File:** Defines the minimal dependencies (fastapi, uvicorn, requests) needed to run the monitoring service and REST API.
 
 ## Setup
 
