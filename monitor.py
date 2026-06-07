@@ -1,8 +1,17 @@
 import requests
+import logging
 from datetime import datetime, timedelta, UTC
 from collections import defaultdict
 
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
+
 RELEVANT_EVENTS = {"WatchEvent", "PullRequestEvent", "IssuesEvent"}
+
 
 class GitHubMonitor:
     def __init__(self, repo):
@@ -17,7 +26,9 @@ class GitHubMonitor:
     def fetch_events(self):
         try:
             response = requests.get(self._url(), timeout=10)
+            
             if response.status_code != 200:
+                logger.warning(f"GitHub API returned status {response.status_code} for {self.repo}")
                 return
 
             for event in response.json():
@@ -28,6 +39,7 @@ class GitHubMonitor:
                 eid = event.get("id")
                 if not eid or eid in self.seen_ids:
                     continue
+
                 self.seen_ids.add(eid)
 
                 created_at = event.get("created_at")
@@ -42,8 +54,10 @@ class GitHubMonitor:
                 if etype == "PullRequestEvent":
                     self.pr_times[self.repo].append(ts)
 
-        except Exception:
-            pass
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Network error fetching events for {self.repo}: {e}")
+        except Exception as e:
+            logger.error(f"Unexpected error in fetch_events for {self.repo}: {e}")
 
     def event_counts(self, minutes):
         cutoff = (datetime.now(UTC) - timedelta(minutes=minutes)).replace(microsecond=0)
@@ -57,27 +71,20 @@ class GitHubMonitor:
         times = self.pr_times[self.repo]
         if len(times) < 2:
             return None
-
         cutoff = (datetime.now(UTC) - timedelta(minutes=window)).replace(microsecond=0)
         filtered = sorted(t for t in times if t >= cutoff)
         if len(filtered) < 2:
             return None
-
         diffs = [(filtered[i] - filtered[i-1]).total_seconds()
                  for i in range(1, len(filtered))]
-
         avg_minutes = (sum(diffs) / len(diffs)) / 60
         return round(avg_minutes, 2)
 
     def pr_debug(self, window=60):
         times = sorted(self.pr_times[self.repo])
         cutoff = (datetime.now(UTC) - timedelta(minutes=window)).replace(microsecond=0)
-
         filtered = [t for t in times if t >= cutoff]
-
         diffs = [(filtered[i] - filtered[i-1]).total_seconds()
                  for i in range(1, len(filtered))]
-
         avg_minutes = round((sum(diffs) / len(diffs)) / 60, 2) if diffs else None
-
         return cutoff, filtered, diffs, avg_minutes
