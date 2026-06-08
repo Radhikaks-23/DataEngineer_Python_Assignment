@@ -42,7 +42,7 @@ Launching the monitor in a background thread
 Exposing REST endpoints
 
 **requirements.txt**
-**Defines the required dependencies:**
+Defines the required dependencies
 fastapi
 uvicorn
 requests
