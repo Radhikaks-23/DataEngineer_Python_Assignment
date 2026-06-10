@@ -51,7 +51,7 @@ requests
 
 **1) Create Python Environment**(Open the project folder in VS Code.)
 - python -m venv venv
-- source venv/bin/activate
+- .\venv\Scripts\Activate
   
 **2)Install Dependencies**
 - pip install -r requirements.txt
